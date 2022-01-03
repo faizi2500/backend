@@ -21,5 +21,8 @@
   "homepage": "https://github.com/faizi2500/backend#readme",
   "devDependencies": {
     "nodemon": "^2.0.15"
+  },
+  "dependencies": {
+    "uuid": "^8.3.2"
   }
 }
