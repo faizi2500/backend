@@ -1,9 +1,13 @@
 const products = require('../data/products.json');
 const { v4: uuidv4 } = require('uuid');
+const mongoose = require('mongoose');
+const { Prdouct } = require('./tweetModel');
+const Product = require('./tweetModel');
 
 const findAll = () => {
   return new Promise((resolve, reject) => {
-    resolve(products);
+    const foods = Product.find({});
+    resolve(foods);
   })
 }
 
@@ -22,11 +26,11 @@ const findById = (id) => {
 const postProduct = newProduct => {
   return new Promise((resolve, reject) => {
     const lenght = products.length;
-    const createdObj = { id: uuidv4(), ...newProduct };
-    products.push(createdObj);
+    const food = new Product(newProduct);
+    food.save();
     const newLength = products.length;
     if (lenght + 1 == newLength) {
-      resolve(createdObj);
+      resolve(food);
     };
   })
 }

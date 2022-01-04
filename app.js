@@ -1,33 +1,23 @@
 const http = require('http');
-const { getProducts, getProductById, addProduct, updateProduct, deleteProduct } = require('./controllers/productController')
+const mongoose = require('mongoose');
+const requestListen = require('./routes/route')
+
+const uri = 'mongodb+srv://faizan:faizan123@cluster0.8pu5p.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
+
+mongoose.connect(uri, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
+.then(() => {
+  console.log('MongoDB Connected')
+  server.listen(PORT, host, () => console.log(`SERVER RUNNING ON PORT ${PORT}`));
+})
+.catch(err => console.log(err))
 
 const host = 'localhost'
-
-const requestListen = ((req, res) => {
-
-    if (req.url == '/api/products' && req.method == 'GET') {
-      getProducts(req, res)
-    } else if (req.url.match(/\/api\/products\/([0-9]+)/) && req.method == 'GET') { //link in resources => regex for url
-      const arr = req.url.split('/');
-      const id = arr[3];
-      getProductById(req, res, id);
-    } else if (req.url == '/api/products' && req.method == 'POST') {
-      addProduct(req, res);
-    } else if (req.url.match(/\/api\/products\/([0-9]+)/) && req.method == 'PUT') {
-      const arr = req.url.split('/');
-      const id = arr[3];
-      updateProduct(req, res, id)
-    } else if (req.url.match(/\/api\/products\/([0-9]+)/) && req.method == 'DELETE') {
-      const id = req.url.split('/')[3];
-      deleteProduct(req, res, id)
-    } else {
-      res.writeHead(404, {'Content-Type': 'application/json'});
-      res.end(JSON.stringify({message: 'Route not found'})); 
-    }
-});
 
 const server = http.createServer(requestListen)
 
 const PORT = process.env.PORT || 5000;
 
-server.listen(PORT, host, () => console.log(`SERVER RUNNING ON PORT ${PORT}`));
+// server.listen(PORT, host, () => console.log(`SERVER RUNNING ON PORT ${PORT}`));
