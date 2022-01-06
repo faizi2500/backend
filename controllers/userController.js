@@ -4,11 +4,12 @@ const bcrypt = require("bcryptjs")
 async function createUser(req, res) {
   try {
     let body = '';
-
+    console.log(req.body);
     req.on('data', (chunk) => {
+      console.log('data',chunk)
       body += chunk.toString();
     });
-
+    
     await req.on('end', async () => {
       const userBody = JSON.parse(body);
       let { name, email, password, dob } = userBody;
@@ -33,7 +34,10 @@ async function createUser(req, res) {
               newUser.password = hash;
               newUser.save().then((result) => {
                 console.log('created Successfully');
-                res.writeHead(201, {'Content-Type': 'application/json'});
+                res.writeHead(201, {
+                  'Content-Type': 'application/json',
+                  'Access-Control-Allow-Origin': 'http://localhost:3000',
+                });
                 res.end('User created', JSON.stringify(newUser));
               }).catch(err => {
                 console.log(err);
