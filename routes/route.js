@@ -1,9 +1,11 @@
 const { getProducts, getProductById, addProduct, updateProduct, deleteProduct } = require('../controllers/productController')
-const { createUser } =require('../controllers/userController');
+const { createUser, verifyUser } =require('../controllers/userController');
 
 const requestListen = ((req, res) => {
   if (req.url == '/api/products' && req.method == 'GET') {
     getProducts(req, res)
+  } else if (req.url.match(/\/user\/login/) && req.method == 'GET') {
+    verifyUser(req, res);
   } else if (req.url.match(/\/user\/sign_up/) && req.method == 'POST') {
     createUser(req, res);
   } else if (req.url.match(/\/api\/products\/([0-9]+)/) && req.method == 'GET') { //link in resources => regex for url
